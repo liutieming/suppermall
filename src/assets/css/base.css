@@ -1,0 +1,71 @@
+@import "./normalize.css";
+
+/*:root 选择器匹配文档根元素。 在 HTML 中，根元素始终是 html 元素。*/
+:root {
+  /* -- 开头的是定义的变量*/
+  /* -- 变量引用的方法: color: var(--color-text);*/
+  --color-text: #666;
+  --color-high-text: #ff5777;
+  /*tint一般是背景的意思, 我一般用于导航的主色调*/
+  --color-tint: #ff8198;
+  --color-background: #fff;
+  /*整体上字体大小设置为14px*/
+  --font-size: 14px;
+  --line-height: 1.5;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "微软雅黑",Arial,sans-serif; /* 设置字体系统, 如果第一个字体系统没有, 则使用后面的. */
+  user-select: none;                        /* 禁止用户鼠标在页面上选中文字/图片等 */
+  -webkit-tap-highlight-color: transparent; /* webkit是苹果浏览器引擎. tap点击, hightlight前景高亮, color颜色, 颜色用数值调节 */
+  background: var(--color-background);      /* 引用上面定义的变量 */
+  color: var(--color-text);
+  width: 100vw;                             /* 100vw 点视窗的100%宽度 */
+}
+
+a {
+  color: var(--color-text);
+  text-decoration: none;                    /* text-decoration 属性规定添加到文本的修饰，下划线、上划线、删除线等。
+                                             * text-decoration 属性是以下三种属性的简写：
+                                             *      text-decoration-line
+                                             *      text-decoration-color
+                                             *      text-decoration-style
+                                             * text-decoration: none;                     没有文本装饰
+                                             * text-decoration: underline red;            红色下划线
+                                             * text-decoration: underline wavy red;       红色波浪形下划线
+                                             */
+}
+
+.clear-fix::after {
+  clear: both;                              /* clear 消除浮动,该属性的值指出了不允许有浮动对象的边情况，又对象左边不允许有浮动、右边不允许有浮动、不允许有浮动对象
+                                             * clear参数值说明: none : 　允许两边都可以有浮动对象
+                                             *                  both : 　不允许有浮动对象
+                                             *                  left : 　不允许左边有浮动对象
+                                             *                  right : 　不允许右边有浮动对象
+                                             */
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  visibility: hidden
+}
+
+.clear-fix {
+  zoom: 1;
+}
+
+.left {
+  flot: left;
+}
+
+.right {
+  flot: right
+}
