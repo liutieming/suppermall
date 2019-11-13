@@ -12,6 +12,9 @@
   /*整体上字体大小设置为14px*/
   --font-size: 14px;
   --line-height: 1.5;
+
+  --height-top-bar: 44px;
+  --height-bottom-bar: 49px;
 }
 
 *,
