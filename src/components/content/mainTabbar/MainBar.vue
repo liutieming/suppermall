@@ -1,5 +1,5 @@
 <template>
-  <tab-bar>
+  <tab-bar class="tab-bar">
     <!--注意这里父组件(App) 传 子组件组件(TabBarItem)自定义属性性 path, 给定路由 -->
     <!--@是一个别名, @ = src 所在文件夹的路径, 其定义在
           E:/LTM/99_WS/MYPRJ2/IWS/study/vue190920/vue15tabbar/tabbar/node_modules/@vue/cli-service/lib/config/base.js
@@ -45,4 +45,7 @@
   }
 </script>
 <style scoped>
+  .tab-bar {
+    height: var(--height-bottom-bar)
+  }
 </style>

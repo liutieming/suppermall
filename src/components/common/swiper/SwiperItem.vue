@@ -6,7 +6,7 @@
 
 <script>
   export default {
-    name: "SwiperItem"
+    name: "Slide"
   }
 </script>
 
@@ -15,13 +15,8 @@
     width: 100%;
     flex-shrink: 0;
   }
-  
   .slide img {
     width: 100%;
   }
 </style>
-
-
-
-
 

@@ -29,38 +29,50 @@
       }
     }
     , mounted() {
-      console.log('xxxxxxxxxxxxxxxxxxxxx  ' + this.$refs.wrapper);
+      // console.log('xxxxxxxxxxxxxxxxxxxxx  ' + this.$refs.wrapper);
       this.scroll = new BScroll(this.$refs.wrapper, {
-        // probeType 监听类型: 0, 1: 不监听, 2: 只监听一次, 3: 一直监听
+        // probeType 数值型 监听类型: 0, 1: 不监听, 2: 只监听一次, 3: 一直监听
         probeType: this.probeType
         
-        // click 点击类型: true: 接受点击, false: 不接受点击事件. 其中 button 不受其影响
+        // click 布尔型 点击类型: true: 接受点击, false: 不接受点击事件. 其中 button 不受其影响
         , click: true
         
-        // pullUpLoad 加载更多事件: 手势为向上拖动到底部
+        // pullUpLoad 布尔型 加载更多事件: 手势为向上拖动到底部
         , pullUpLoad: this.pullUpLoad
       })
       , this.scroll.on("scroll", (position) => {    // 滚动监听程序
-        console.log('this.$emit("scroll", position)........... 应由父组件给出具体处理逻辑');
+        // console.log('this.$emit("scroll", position)........... 应由父组件给出具体处理逻辑');
         this.$emit("scroll", position)              // 发射事件 第一个参数是事件名称, 第二个参数是 事件参数
       })
       , this.scroll.on("pullingUp", () => {         // 加载更多监听程序
-        console.log("pullingUp.............. 应由父组件给出具体处理逻辑");
+        // console.log("pullingUp.............. 应由父组件给出具体处理逻辑");
         this.$emit("pullingUp")
       })
     }
     , methods: {
       backTop(x = 0, y = 0, time = 333) {
         console.log("backTop().....");
-        this.scroll.scrollTo(x, y, time);
+        
+        // 下面代码解析 && 逻辑与操作符的作用, && 左边表达式有值, 执行其右边的表达式.
+        //   也就是确保 scroll; scroll.scrollTo 函数都不是 null, 才执行 scroll.scrollTo(...) 函数
+        //   因为图片加载很快, 下面的代码可以避免触发空对象引用执行.
+        this.scroll && this.scroll.scrollTo && this.scroll.scrollTo(x, y, time);
+      }
+      
+      , scrollTo(x = 0, y = 0, time = 333) {
+        console.log("scrollTo().....");
+        this.scroll && this.scroll.scrollTo(x, y, time);
+      }
+      , getScrollY() {
+        return this.scroll ? this.scroll.y : 0        // 得到 Scroll 的 y 轴值
       }
       
       , finishPullUp () {           // 这里对 finsihPullUp() 进行一次包装, 对 better-scroll 组件解耦
-        this.scroll.finishPullUp()  // 该方法 刷新 pullUpLoad状态, 允许下一次加载更多
+        this.scroll && this.scroll.finishPullUp()  // 该方法 刷新 pullUpLoad状态, 允许下一次加载更多
       }
       , refresh () {                // 这里对 refresh() 进行一层包装, 对 better-scroll 组件解耦
-        console.log("refresh()....................");
-        this.scroll.refresh()       // 调用原生scroll方法,重新计算 scroll管理的高度
+        // console.log("refresh()....................");
+        this.scroll && this.scroll.refresh()       // 调用原生scroll方法,重新计算 scroll管理的高度
       }
     }
     , computed: {}
