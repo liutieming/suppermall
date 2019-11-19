@@ -1,17 +1,19 @@
 <template>
-  <div>
+  <div class="detail-main">
     <detail-nav-bar class="detail-nav-bar">
       <div slot="left">&lt</div>
       <div slot="center">详情</div>
     </detail-nav-bar>
     <detail-swiper :p-top-images="dTopImgages"></detail-swiper>
     <detail-base-info :goods="dGoods"></detail-base-info>
+    <detail-shop-info :shop="dShop"></detail-shop-info>
   </div>
 </template>
 <script>
   import DetailNavBar from "./chileComps/DetailNavBar";
   import DetailSwiper from "./chileComps/DetailSwiper";
   import DetailBaseInfo from "./chileComps/DetailBaseInfo";
+  import DetailShopInfo from "./chileComps/DetailShopInfo";
   
   import {getDetail, Goods, Shop} from "@/network/detail.js"
   
@@ -58,9 +60,23 @@
       DetailNavBar,
       NavBar: DetailNavBar,
       DetailSwiper,
-      DetailBaseInfo
+      DetailBaseInfo,
+      DetailShopInfo
     }
   }
 </script>
 <style scoped>
+  .detail-main {
+    margin-top: var(--height-top-bar);
+  }
+  .detail-nav-bar {
+    background-color: #0f0;
+    width: 100%;
+    position: fixed;
+    
+    top: 0;
+    left: 0;
+    z-index: 9;
+  }
+
 </style>
