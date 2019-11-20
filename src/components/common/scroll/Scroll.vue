@@ -37,7 +37,7 @@
         // click 布尔型 点击类型: true: 接受点击, false: 不接受点击事件. 其中 button 不受其影响
         , click: true
         
-        // pullUpLoad 布尔型 加载更多事件: 手势为向上拖动到底部
+        // pullUpLoad 布尔型 打开/关闭上拉 加载更多事件: 手势为向上拖动到底部
         , pullUpLoad: this.pullUpLoad
       })
       , this.scroll.on("scroll", (position) => {    // 滚动监听程序
@@ -71,7 +71,7 @@
         this.scroll && this.scroll.finishPullUp()  // 该方法 刷新 pullUpLoad状态, 允许下一次加载更多
       }
       , refresh () {                // 这里对 refresh() 进行一层包装, 对 better-scroll 组件解耦
-        // console.log("refresh()....................");
+        console.log("refresh()....................");
         this.scroll && this.scroll.refresh()       // 调用原生scroll方法,重新计算 scroll管理的高度
       }
     }

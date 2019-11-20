@@ -27,7 +27,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    
+    z-index: 1;
+  
     /*设置小阴影 参数 0 偏离X轴; -1px 偏离Y轴(向上); 11px 模糊长度; rgba(~~~~); 颜色及透明度*/
     box-shadow: 0 -1px 11px rgba(100, 100, 100, 0.5);
     

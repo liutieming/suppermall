@@ -3,10 +3,15 @@
     <detail-nav-bar class="detail-nav-bar">
       <div slot="left">&lt</div>
       <div slot="center">详情</div>
+      <div slot="right">详情</div>
     </detail-nav-bar>
-    <detail-swiper :p-top-images="dTopImgages"></detail-swiper>
-    <detail-base-info :goods="dGoods"></detail-base-info>
-    <detail-shop-info :shop="dShop"></detail-shop-info>
+    <scroll class="scroll" ref="refScroll">
+      <detail-swiper :p-top-images="dTopImgages"></detail-swiper>
+      <detail-base-info :goods="dGoods"></detail-base-info>
+      <detail-shop-info :shop="dShop"></detail-shop-info>
+      <detail-goods-info :detailInfo="dDetailInfo" @imgLoaded="imgLoaded"></detail-goods-info>
+      <detail-goods-params :paramInfo="dGoodsParam"/>
+    </scroll>
   </div>
 </template>
 <script>
@@ -14,8 +19,12 @@
   import DetailSwiper from "./chileComps/DetailSwiper";
   import DetailBaseInfo from "./chileComps/DetailBaseInfo";
   import DetailShopInfo from "./chileComps/DetailShopInfo";
+  import DetailGoodsInfo from "./chileComps/DetailGoodsInfo"
+  import DetailGoodsParams from "./chileComps/DetailGoodsParams.vue"
   
-  import {getDetail, Goods, Shop} from "@/network/detail.js"
+  import {getDetail, Goods, Shop, GoodsParam} from "@/network/detail.js"
+  
+  import Scroll from "@/components/common/scroll/Scroll.vue"
   
   // console.log(DetailNavBar);
   export default {
@@ -26,6 +35,8 @@
         , dTopImgages: []     // 顶部轮播图
         , dGoods: {}          // 货品信息
         , dShop: {}           // 店铺信息
+        , dDetailInfo: {}     // 详情数据
+        , dGoodsParam: {}     // 货品参数信息
       }
     }
     , activated() {
@@ -46,37 +57,63 @@
           
           // 3. 得到 Shop 商家信息
           this.dShop = new Shop(data.shopInfo)
+          
+          // 4. 得到 详情 数据
+          this.dDetailInfo = data.detailInfo;
+          
+          // 5. 得到 货品参数信息
+          this.dGoodsParam = new GoodsParam(data.itemParams.info, data.itemParams.rule)
         });
       }
       
     }
-    , methods: {}
+    , methods: {
+      imgLoaded() {
+        console.log("imgLoaded @@@@@@");
+        this.$refs.refScroll.refresh();
+      }
+    }
     , computed: {
       cIid() {
         return this.$route.query.iid
       }
     }
     , components: {
-      DetailNavBar,
-      NavBar: DetailNavBar,
-      DetailSwiper,
-      DetailBaseInfo,
-      DetailShopInfo
+      DetailNavBar
+      , NavBar: DetailNavBar
+      , DetailSwiper
+      , DetailBaseInfo
+      , DetailShopInfo
+      , Scroll
+      , DetailGoodsInfo
+      , DetailGoodsParams
     }
   }
 </script>
 <style scoped>
   .detail-main {
-    margin-top: var(--height-top-bar);
-  }
-  .detail-nav-bar {
-    background-color: #0f0;
-    width: 100%;
-    position: fixed;
-    
-    top: 0;
-    left: 0;
+    position: relative;
+    width: 100vw;
     z-index: 9;
+    background-color: #fff;
+    /*margin-top: var(--height-top-bar);*/
+  }
+  
+  .detail-nav-bar {
+    background-color: #fff;
+    /*width: 100%;*/
+    position: relative;
+    /*top: 0;*/
+    /*left: 0;*/
+    z-index: 9;
+  }
+  
+  .scroll {
+    position: fixed;
+    top: var(--height-top-bar);
+    height: calc(100vh - var(--height-top-bar));
+    width: 100vw;
+    background-color: #fff;
   }
 
 </style>
