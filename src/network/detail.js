@@ -9,7 +9,14 @@ export function getDetail(iid) {
   })
 }
 
-// 货品信息
+export function getRecommend() {
+  return request({
+    url: '/recommend'
+  })
+}
+
+
+// 定义货品信息
 export class Goods {
   constructor(itemInfo, columns, services) {
     this.title = itemInfo.title;
@@ -24,7 +31,7 @@ export class Goods {
   }
 }
 
-// 商家信息
+// 定义商家信息
 export class Shop {
   constructor(shopInfo) {
     this.logo = shopInfo.shopLogo;
@@ -36,7 +43,7 @@ export class Shop {
   }
 }
 
-// 货品参数信息
+// 定义货品参数信息
 export class GoodsParam {
   constructor(info, rule) {
     this.image = info.image ? info.image[0] : "";
@@ -44,3 +51,4 @@ export class GoodsParam {
     this.sizes = rule.tables;
   }
 }
+

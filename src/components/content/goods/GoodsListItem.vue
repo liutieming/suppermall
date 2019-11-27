@@ -1,7 +1,8 @@
 <template>
   <div class="goods-item" @click="goodsItemClicked">
     <!--@load是vue层img图片加载事件, img 原生的图片加载事件是 onload-->
-    <img :src="goodsItem.show.img" alt="" @load="imgLoaded">
+    <!--<img :src="goodsItem.show.img" alt="" @load="imgLoaded">-->
+    <img :src="cImageUrl" alt="" @load="imgLoaded">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -42,7 +43,18 @@
         })
       }
     }
-    , computed: {}
+    , computed: {
+      cImageUrl () {
+        // console.log("uuuuuuuuu");
+        
+        if (this.goodsItem.show) {
+          return this.goodsItem.show.img
+        } else if (this.goodsItem.image) {
+          return this.goodsItem.image
+        }
+        
+      }
+    }
     , components: {}
   }
 </script>

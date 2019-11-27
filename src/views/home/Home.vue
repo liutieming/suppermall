@@ -32,7 +32,7 @@
     </scroll>
     
     <!--组件的原生事件如 click (非原生事件为 组件 内部 $emit 出来的事件), 必须给对应事件加上 .native 修改符, 才能进行监听-->
-    <back-top @click.native="backClick" ref="refBackTop" v-show="isShowBackTop"></back-top>
+    <back-top @click.native="backTop" ref="refBackTop" v-show="isShowBackTop"></back-top>
     
     <br><br>
     <ul>
@@ -61,11 +61,13 @@
 </template>
 <script>
   import {debounce} from "@/common/utils.js";                           // 载入 防抖函数
+  import {itemImgListenerMixin} from "@/common/mixin.js";                    // 载入 防抖函数
+  import {backTopMixin} from "@/common/mixin.js"
+  import {BACK_POSITION} from "@/common/const";
   
   import NavBar from "@/components/common/navbar/NavBar"
   import TabControl from "@/components/content/tabControl/TabControl"
   import GoodsList from "@/components/content/goods/GoodsList"
-  import BackTop from "@/components/common/backTop/BackTop.vue"
   
   import Scroll from "@/components/common/scroll/Scroll"
   
@@ -103,13 +105,13 @@
         , tabOffsetTop: 0
         , isFixed: false
         , leaveY: 0               // 记录当离开 home页面时 scroll 的 y轴位置
+        // , eItemImgListener: null  // 用于保存 一个事件函数 (因为 混入了, 所以注掉)
       }
     }
     , components: {
       NavBar
       , TabControl
       , GoodsList
-      , BackTop
       
       , Scroll
       
@@ -126,27 +128,14 @@
       this.getHomeGoods("new", 1);
       this.getHomeGoods("sell", 1);
     }
+    //// 代码混入: vue高级功能, 将公用代码抽离, 混入到需要的地方, 混入的代码,和对应事件的代码被依次放入数组中,
+    //                按数组中的顺序执行. 也就是先执行混入的代码, 然后再执行本身的代码. 这样本身的代码可以覆盖
+    //                混入的代码.
+    //   下面的例子, 我混入了 itemImgListenerMixin , 它是一个对象, 有一个成员是 mounted, 其中mounted内容会被混入到
+    //                本地的 mounted 钩子函数中执行.
+    , mixins: [itemImgListenerMixin, backTopMixin]
     , mounted() {
-      ///////////////// 1. 完成加载事务处理 (解决 刷新 scroll 高度问题) /////////////////
-      // 包装一层防抖功能, 以解决频繁执行 refresh() 函数,
-      //   第一个参数 接收的是一个函数
-      //   第二个参数 500 指延时500毫秒执行. 即在500毫秒内有多次执行仅执行最后一次函数
-      // 函数)
-      const refresh = debounce(this.$refs.refScroll.refresh, 500)
-      // 在事件总线($bus)上, 注册事件($on)的方法, 实现图片完成加载事件的监听
-      this.$bus.$on("itemImgLoaded", () => {
-        // console.log("itemImgLoaded..........");
-        // this.$refs.refScroll.refresh();
-        refresh();
-      })
-      
-      // ///////////////// 2. 获得tabControl的offsetTop (实现吸顶功能) /////////////////////
-      // console.log("xxxxxxxxxxxxxxxxxxxxxxxx");
-      // setTimeout(() => {
-      //   console.log(this.$refs.refTabControl.$el.offsetTop);
-      // }, 500)
-      
-      
+      // console.log("有代码混入, 所以我就不用写代码了");
     }
     , activated() {
       // console.log('activated');
@@ -155,8 +144,12 @@
       this.$refs.refScroll.refresh();                     // 刷新一次 (重新计算 scroll 的高度)
     }
     , deactivated() {
+      // 1. 保存Y值
       // console.log('deactivated');
       this.leaveY = this.$refs.refScroll.getScrollY();    // 记录 scorll 的y轴位置
+      
+      // 2. 取消全局事件监听
+      this.$bus.$off('itemImgLoaded', this.eItemImgListener)
     }
     , methods: {
       swiperImageLoaded() {
@@ -213,14 +206,10 @@
         this.$refs.refTabControlTop.activeIndex = index
         this.$refs.refTabControlFloat.activeIndex = index
       }
-      , backClick() {
-        console.log("native's backClick()");
-        this.$refs.refScroll.backTop();           // 调用 Scroll 组件内部封装好的 backTop 函数
-      }
       , contentScroll(position) {
-        // 该方法处理流动事件
-        // 1. 当向下滚动距离达到 -1000 以上时, 得到 true, 否则为 false
-        this.isShowBackTop = position.y < -1000
+        // 该方法处理滚动事件
+        // 1. 当向下滚动距离达到 -1000 以上时, 得到 true, 否则为 false (BACK_POSITION = 1000)
+        this.isShowBackTop = position.y < -BACK_POSITION
       
         // 2. 计算, 是否固定. 用于实现 tabControl 的吸顶驻留功能
         this.isFixed = -position.y > this.tabOffsetTop - this.$refs.refHomeNav.$el.offsetHeight

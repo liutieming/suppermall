@@ -20,7 +20,7 @@
     position: fixed;
     z-index: 1111;
     right: 5px;
-    bottom: calc(var(--height-bottom-bar) + 5px);
+    bottom: calc(var(--height-bottom-bar) + 8px);
   }
   .back-top img {
     width: calc(var(--height-bottom-bar) / 4 * 3);

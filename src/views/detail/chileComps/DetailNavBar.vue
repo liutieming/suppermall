@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav-bar>
-      <div slot="left" class="back" @click="backClick">&lt</div>
+      <div slot="left" class="back" @click="goBack">&lt</div>
       <div slot="center" class="title">
           <div @click="barItemClick(index)"
                v-for="(item, index) in dTitle"
@@ -23,13 +23,30 @@
         , dCurrentIndex: 0
       }
     }
+    , props: {
+      pCurrentIndex: {
+        type: Number
+        , default() {
+          return 0;
+        }
+      }
+    }
+    , watch: {
+      // pCurrentIndex(val) {
+      //   console.log("watch pCurrentIndex------->" + val);
+      // }
+    }
     , methods: {
       barItemClick(index) {
         console.log(index);
         this.dCurrentIndex = index
+        this.$emit("titleClick", index);
       }
-      , backClick() {
+      , goBack() {
         this.$router.go(-1)     // this.$router.back() 效果一样
+      }
+      , setCurrentIndex(index) {
+        this.dCurrentIndex = index
       }
     }
     , computed: {}

@@ -37,7 +37,7 @@
     , methods: {
       imgLoad() {
         ++this.counter;
-        console.log('imgLoad: ' + this.counter);
+        // console.log('imgLoad: ' + this.counter);
         if (this.counter === this.imageLength) {
           // console.log("imgLoaded.......");
           this.$emit("imgLoaded"); // 所有图片加载完后向父组件发射"图片载完"事件, 父组件refresh scroll 得到最新的高度值
