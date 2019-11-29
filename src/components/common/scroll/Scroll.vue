@@ -51,7 +51,7 @@
     }
     , methods: {
       backTop(x = 0, y = 0, time = 333) {
-        console.log("backTop().....");
+// console.log"backTop().....");
         
         // 下面代码解析 && 逻辑与操作符的作用, && 左边表达式有值, 执行其右边的表达式.
         //   也就是确保 scroll; scroll.scrollTo 函数都不是 null, 才执行 scroll.scrollTo(...) 函数
@@ -60,7 +60,7 @@
       }
       
       , scrollTo(x = 0, y = 0, time = 333) {
-        console.log("scrollTo().....");
+// console.log"scrollTo().....");
         this.scroll && this.scroll.scrollTo(x, y, time);
       }
       , getScrollY() {
@@ -71,7 +71,7 @@
         this.scroll && this.scroll.finishPullUp()  // 该方法 刷新 pullUpLoad状态, 允许下一次加载更多
       }
       , refresh () {                // 这里对 refresh() 进行一层包装, 对 better-scroll 组件解耦
-        console.log("refresh()....................");
+// console.log"refresh()....................");
         this.scroll && this.scroll.refresh()       // 调用原生scroll方法,重新计算 scroll管理的高度
       }
     }

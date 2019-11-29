@@ -38,7 +38,7 @@
     }
     , methods: {
       barItemClick(index) {
-        console.log(index);
+// console.logindex);
         this.dCurrentIndex = index
         this.$emit("titleClick", index);
       }

@@ -2,7 +2,7 @@
   <div class="bottom-bar">
     <div class="bar-item bar-left">
       <div>
-        <i class="icon-service"></i>
+        <i class="icon service"></i>
         <span class="text">客服</span>
       </div>
       <div>
@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="bar-item bar-right">
-      <div class="cart">加入购物车</div>
+      <div class="cart" @click="addToCart">加入购物车</div>
       <div class="buy">购买</div>
     </div>
     <!--<sport-ball ref="ball" class="sport-ball"></sport-ball>-->
@@ -28,7 +28,12 @@
     , data() {
       return {}
     }
-    , methods: {}
+    , methods: {
+      addToCart () {
+// console.log"addToCart...........");
+        this.$emit("addCart")
+      }
+    }
     , computed: {}
     , components: {}
   }
@@ -39,6 +44,7 @@
     width: 100%;
     height: var(--height-bottom-bar);
     position: fixed;
+    z-index: 100;
     bottom: 0;
   
     display: flex;
@@ -59,18 +65,20 @@
     width: 22px;
     height: 22px;
     margin: 6px auto 3px;
-    /*background: url("xxx") 0 0/100% ;*/
+    /*background: url("../../../assets/img/detailBottomBar/cs.png") 0 0/100% ;*/
   }
   .bar-left .service {
-    background-position: 0 -54px;
+    /*background-position: 0 -54px;*/
+    background: url("../../../assets/img/detailBottomBar/cs.png") 0 0/100% ;
   }
   .bar-left .shop {
-    background-position: 0 -98px;
+    /*background-position: 0 -98px;*/
+    background: url("../../../assets/img/detailBottomBar/shop.png") 0 0/100% ;
   }
   .bar-right {
     font-size: 15px;
     color: #fff;
-    line-height: 58px;
+    line-height: var(--height-bottom-bar);
   }
   .bar-right .cart {
     background-color: #ffe817;
@@ -83,6 +91,9 @@
     position: absolute;
     left: 225px;
     bottom: 20px;
+  }
+  .select {
+    background: url("../../../assets/img/detailBottomBar/collect-n.png") 0 0/100% ;
   }
   
 </style>

@@ -1,12 +1,14 @@
 <template>
   <div class="detail-main">
-    
     <detail-nav-bar ref="refDetailNavBar" class="detail-nav-bar" @titleClick="titleClick" :pCurrentIndex="2">
       <div slot="left">&lt</div>
       <div slot="center">详情</div>
       <div slot="right">详情</div>
     </detail-nav-bar>
     <scroll class="scroll" ref="refScroll" :probeType="3" @scroll="scroll">
+      <ul>
+        <li v-for="item in $store.state.cartList">{{item}}</li>
+      </ul>
       <detail-swiper :p-top-images="dTopImgages" ref="refTitleGoods"></detail-swiper>
       <detail-base-info :goods="dGoods"></detail-base-info>
       <detail-shop-info :shop="dShop"></detail-shop-info>
@@ -15,7 +17,7 @@
       <detail-comment-info :commentInfo="dCommentInfo" ref="refTitleComment"/>
       <detail-recommend-info :recommends="dRecommends" ref="refTitleRecommends"/>
     </scroll>
-    <detail-bottom-bar></detail-bottom-bar>
+    <detail-bottom-bar @addCart="addToCart"/>
     <back-top @click.native="backTop" ref="refBackTop" v-show="isShowBackTop"></back-top>
   </div>
 </template>
@@ -35,7 +37,7 @@
   import {debounce} from "@/common/utils";
   import {itemImgListenerMixin, backTopMixin} from "@/common/mixin.js"
   import {BACK_POSITION} from "../../common/const";
-
+  
   import Scroll from "@/components/common/scroll/Scroll.vue"
   
   // console.log(DetailNavBar);
@@ -52,7 +54,7 @@
         , dCommentInfo: {}        // 评论信息
         , dRecommends: []         // 推荐信息
         // , eItemImgListener: null  // 保存事件函数  (因为被混入了, 所以注掉)
-        , dTitleMapPos: []
+        , dTitleMapPos: []        //
         , dCurrentBarIndex: 0     // 当前 detail-nav-bar title 索引值
         , isShowBackTop: false    // 是否显示 回到顶部
       }
@@ -79,7 +81,7 @@
     , mixins: [itemImgListenerMixin, backTopMixin]
     , mounted() {
       // console.log("我是自己写的内容, 如果被混入, 混入的内容会先执行");
-    
+      
       this.calcTitleMapPos()
     }
     , deactivated() {
@@ -94,6 +96,7 @@
         getDetail(this.dIid).then((res) => {
           // 0. 得到数据
           const data = res.result;
+          console.log(data);
           // console.log("Detail.activated()............");
           // console.log(data);
           
@@ -132,7 +135,7 @@
         this.$refs.refScroll.refresh();
       }
       , titleClick(index) {
-        console.log("titleClick::::::::: " + index);
+// console.log"titleClick::::::::: " + index);
         this.$refs.refScroll.refresh();
         this.calcTitleMapPos();
         this.$refs.refScroll.scrollTo(0, -this.dTitleMapPos[index].pos, 333);
@@ -142,14 +145,14 @@
         // $nextTick 是 vue 的回调函数, 回调条件: template 渲染完成. 这个函数很重要, 用它作为数据与渲染完成同步的标志
         // 我没有这个函数, 而是用了 setTimeout(). 因为它不保证图片也加载完了.
         // this.$nextTick(() => {})
-        console.log("calcTitleMapPos $$$$$$$$$$$$$$$$$ ");
+// console.log"calcTitleMapPos $$$$$$$$$$$$$$$$$ ");
         setTimeout(() => {
           this.dTitleMapPos = Object.keys(this.$refs).filter((item) => {
             return item.indexOf("refTitle") >= 0    // 只保留包函 refTitle的
           });
           
           this.dTitleMapPos = this.dTitleMapPos.map((item, index) => {
-            console.log({"title": this.dTitleMapPos[index], "pos": this.$refs[this.dTitleMapPos[index]].$el.offsetTop});
+// console.log{"title": this.dTitleMapPos[index], "pos": this.$refs[this.dTitleMapPos[index]].$el.offsetTop});
             return {"title": this.dTitleMapPos[index], "pos": this.$refs[this.dTitleMapPos[index]].$el.offsetTop}
           })
         }, 1111)
@@ -157,7 +160,7 @@
       , scroll(position) {
         let okIndex = 0;
         let minVal = 99999999;
-
+        
         // 得到 最接近的 title index
         this.dTitleMapPos.map((item, index) => {
           return -position.y - item.pos < 0 ? 999999999 : -position.y - item.pos
@@ -170,7 +173,7 @@
         if (this.dCurrentBarIndex !== okIndex) {
           this.dCurrentBarIndex = okIndex;
           this.$refs.refDetailNavBar.setCurrentIndex(okIndex);
-          console.log("this.dCurrentBarIndex=======" + this.dCurrentBarIndex);
+// console.log"this.dCurrentBarIndex=======" + this.dCurrentBarIndex);
         }
         
         // 计算 回到顶部
@@ -178,6 +181,24 @@
         
         // 使用混入的函数计算 回到顶部
         this.listenShowBackTop(position)
+      }
+      , addToCart() {
+        console.log("Detail.addToCart.........");
+        // 1. 获取购物车需要展示的信息
+        const product = {}
+        product.image = this.dTopImgages[0];
+        product.title = this.dGoods.title;
+        product.desc = this.dGoods.desc;
+        product.newPrice = this.dGoods.newPrice;
+        product.lowNowPrice = this.dGoods.lowNowPrice;
+        product.iid = this.dIid;
+        
+        // // 2. 将商品添加到购物车里 通过  commit mutations
+        // // this.$store.cartList.push(product)   // 这么写不推荐 因为 Vue 将无法捕捉 数据的变化
+        // this.$store.commit("addCart", product); // commit 执行 mutations中定义的 addCart方法, 实现将product -> cartList
+        
+        // 2. 将商品添加到购物车 通过  dispatch actions
+        this.$store.dispatch("addCart", product);
       }
     }
     , computed: {

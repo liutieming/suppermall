@@ -143,20 +143,20 @@
         
       // 为流动条滚动添加侦听
       , this.scroll.on('scroll', (position) => {
-        console.log(position);
+// console.logposition);
       })
         
       // 为下拉加载事件添加侦听
       , this.scroll.on("pullingUp", () => {
-        console.log("触发了[加载更多]事件..............doing");
+// console.log"触发了[加载更多]事件..............doing");
       })
     }
     , methods: {
       btnClick() {
-        console.log("btn 您点我了");
+// console.log"btn 您点我了");
       }
       , ulClick() {
-        console.log("ul 您点我了");
+// console.log"ul 您点我了");
       }
     }
     , computed: {}

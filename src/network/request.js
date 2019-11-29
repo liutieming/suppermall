@@ -20,7 +20,7 @@ export function request(config) {
   instance.interceptors.response.use(result => {
     return result.data
   }, err => {
-    console.log(err);
+// console.logerr);
   })
   
   return instance(config);

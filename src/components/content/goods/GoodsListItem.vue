@@ -33,7 +33,7 @@
         this.$bus.$emit("itemImgLoaded");       // 向 事件总线 发射事件, 让能处理该事件的上级组件, 给定具体的处理方法
       }
       , goodsItemClicked() {
-        console.log("goodsItemClicked");
+// console.log"goodsItemClicked");
         // this.$router.push("/detail")
         this.$router.push({
           path: "/detail"

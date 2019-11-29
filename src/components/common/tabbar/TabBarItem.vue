@@ -36,7 +36,7 @@
     , methods: {
       // 当用户点击时进行路由
       clk () {
-        console.log('xxx');
+// console.log'xxx');
         this.$router.replace(this.path)
       }
     }

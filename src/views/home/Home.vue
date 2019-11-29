@@ -165,7 +165,7 @@
       // 请求多个数据
       getHomeMultidata() {
         getHomeMultidata().then(res => {
-          console.log(res);
+// console.logres);
           this.result = res;
           this.banners = res.data.banner.list;
           this.recommends = res.data.recommend.list;
@@ -182,8 +182,8 @@
           // 因为图片是异步加载, 原图片位置有可能被撑高, 所要在加载完图片后, 刷新 scroll
           this.$refs.refScroll.scroll.refresh()
           
-          console.log('加载 goods 数据.........');
-          console.log(res);
+// console.log'加载 goods 数据.........');
+// console.logres);
         })
       }
       
@@ -215,7 +215,7 @@
         this.isFixed = -position.y > this.tabOffsetTop - this.$refs.refHomeNav.$el.offsetHeight
       }
       , loadMore() {
-        console.log("loadMore..............");
+// console.log"loadMore..............");
         this.getHomeGoods(this.currentType);
         this.$refs.refScroll.finishPullUp();      // 该方法 刷新 pullUpLoad状态, 允许下一次加载更多
         
