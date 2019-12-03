@@ -19,6 +19,7 @@ export default {
   
   // 实现 cartList.push
   , [ADD_CART] (state, payload) {
+    payload.checked = false;          // 在购物车中是否显示选中.
     state.cartList.push(payload);
   }
 }

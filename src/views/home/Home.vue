@@ -60,7 +60,7 @@
   </div>
 </template>
 <script>
-  import {debounce} from "@/common/utils.js";                           // 载入 防抖函数
+  // import {debounce} from "@/common/utils.js";                           // 载入 防抖函数
   import {itemImgListenerMixin} from "@/common/mixin.js";                    // 载入 防抖函数
   import {backTopMixin} from "@/common/mixin.js"
   import {BACK_POSITION} from "@/common/const";

@@ -30,7 +30,6 @@
     }
     , methods: {
       addToCart () {
-// console.log"addToCart...........");
         this.$emit("addCart")
       }
     }

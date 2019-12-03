@@ -1,15 +1,22 @@
 <template>
   <div class="cart">
+    <!--顶部 导航栏-->
     <nav-bar class="nav-bar">
       <div slot="center">购物车({{length}})</div>
     </nav-bar>
+    
+    <!--中部 列表-->
     <cart-list></cart-list>
+    
+    <!--底部 按钮栏 及 计算汇总功能-->
+    <cart-buttom-bar/>
   </div>
 </template>
 <script>
   import NavBar from "@/components/common/navbar/NavBar.vue"
   
   import CartList from "./cartComps/CartList"
+  import CartButtomBar from "./cartComps/CartButtomBar"
   
   import {mapGetters} from "vuex";
   
@@ -38,6 +45,7 @@
     , components: {
       NavBar
       , CartList
+      , CartButtomBar
     }
   }
 </script>

@@ -6,9 +6,9 @@
       <div slot="right">详情</div>
     </detail-nav-bar>
     <scroll class="scroll" ref="refScroll" :probeType="3" @scroll="scroll">
-      <ul>
-        <li v-for="item in $store.state.cartList">{{item}}</li>
-      </ul>
+      <!--<ul>-->
+        <!--<li v-for="item in $store.state.cartList">{{item}}</li>-->
+      <!--</ul>-->
       <detail-swiper :p-top-images="dTopImgages" ref="refTitleGoods"></detail-swiper>
       <detail-base-info :goods="dGoods"></detail-base-info>
       <detail-shop-info :shop="dShop"></detail-shop-info>
@@ -34,9 +34,7 @@
   
   import {getDetail, getRecommend, Goods, Shop, GoodsParam} from "@/network/detail.js"
   
-  import {debounce} from "@/common/utils";
   import {itemImgListenerMixin, backTopMixin} from "@/common/mixin.js"
-  import {BACK_POSITION} from "../../common/const";
   
   import Scroll from "@/components/common/scroll/Scroll.vue"
   
