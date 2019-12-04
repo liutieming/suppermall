@@ -1,11 +1,11 @@
 <template>
   <div class="buttom-bar">
     <div class="check-content">
-      <check-button class="check-button"/>
+      <check-button class="check-button" :checked="isAllCheck" @click.native="btnCheck"/>
       <span>全选</span>
     </div>
     <div class="price">
-      <span>合计: {{totalPrice}}</span>
+      <span>合计: {{totalPrice | formatTotalPrice}}</span>
     </div>
     <div class="calc">去付款({{checkedLength}})</div>
   </div>
@@ -22,7 +22,22 @@
     , data() {
       return {}
     }
-    , methods: {}
+    , methods: {
+      btnCheck() {
+        if (this.isAllCheck) {
+          this.$store.getters.cartList.forEach(item => {
+            item.checked = false
+          })
+        } else {
+          this.$store.getters.cartList.forEach(item => item.checked = true)
+        }
+      }
+    }
+    , filters: {
+      formatTotalPrice(value) {
+        return "¥ " + value.toFixed(2);
+      }
+    }
     , computed: {
       totalPrice() {
         // 第一种对数组累计求值的方法, 使用 forEach
@@ -35,11 +50,16 @@
         totalP = this.$store.state.cartList.reduce((sum, item) => {
           return sum += item.checked ? item.lowNowPrice * item.count : 0;
         }, 0)       // 参数 0 必须给出. 0 是 传参 sum 的初使值
-        return "¥" + totalP;
+        return totalP;
       }
       , ...mapGetters(["cartList"])
       , checkedLength() {
         return this.cartList.filter(item => item.checked === true).length
+      }
+      , isAllCheck() {
+        return this.cartList && this.cartList.length > 0
+          ? this.cartList.filter(item => item.checked === false).length === 0
+          : false;
       }
     }
   }

@@ -1,0 +1,16 @@
+/*:root 选择器匹配文档根元素。 在 HTML 中，根元素始终是 html 元素。*/
+:root {
+  /* -- 开头的是定义的变量*/
+  /* -- 变量引用的方法: color: var(--color-text);*/
+  --color-text: #666;
+  --color-high-text: #ff5777;
+  /*tint一般是背景的意思, 我一般用于导航的主色调*/
+  --color-tint: #ff8198;
+  --color-background: #fff;
+  /*整体上字体大小设置为14px*/
+  --font-size: 14px;
+  --line-height: 1.5;
+
+  --height-top-bar: 44px;
+  --height-bottom-bar: 49px;
+}

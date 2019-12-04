@@ -34,29 +34,6 @@
     <!--组件的原生事件如 click (非原生事件为 组件 内部 $emit 出来的事件), 必须给对应事件加上 .native 修改符, 才能进行监听-->
     <back-top @click.native="backTop" ref="refBackTop" v-show="isShowBackTop"></back-top>
     
-    <br><br>
-    <ul>
-      <li>例子1</li>
-      <li>例子2</li>
-      <li>例子3</li>
-      <li>例子4</li>
-      <li>例子5</li>
-      <li>例子6</li>
-      <li>例子7</li>
-      <li>例子8</li>
-      <li>例子9</li>
-      <li>例子10</li>
-      <li>例子11</li>
-      <li>例子12</li>
-      <li>例子13</li>
-      <li>例子14</li>
-      <li>例子15</li>
-      <li>例子16</li>
-      <li>例子17</li>
-      <li>例子18</li>
-      <li>例子19</li>
-      <li>例子20</li>
-    </ul>
   </div>
 </template>
 <script>

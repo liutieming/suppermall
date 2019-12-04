@@ -6,9 +6,6 @@
       <div slot="right">详情</div>
     </detail-nav-bar>
     <scroll class="scroll" ref="refScroll" :probeType="3" @scroll="scroll">
-      <!--<ul>-->
-        <!--<li v-for="item in $store.state.cartList">{{item}}</li>-->
-      <!--</ul>-->
       <detail-swiper :p-top-images="dTopImgages" ref="refTitleGoods"></detail-swiper>
       <detail-base-info :goods="dGoods"></detail-base-info>
       <detail-shop-info :shop="dShop"></detail-shop-info>
@@ -37,6 +34,8 @@
   import {itemImgListenerMixin, backTopMixin} from "@/common/mixin.js"
   
   import Scroll from "@/components/common/scroll/Scroll.vue"
+  
+  import { mapActions } from "vuex";
   
   // console.log(DetailNavBar);
   export default {
@@ -128,12 +127,13 @@
       }
     }
     , methods: {
-      imgLoaded() {
+      // ...mapActions 的作用 与...mapGetters 一样, 将 vuex 中的 方法 添加到 本组件中来用.
+      ...mapActions(["addCart"])
+      , imgLoaded() {
         // console.log("imgLoaded @@@@@@");
         this.$refs.refScroll.refresh();
       }
       , titleClick(index) {
-// console.log"titleClick::::::::: " + index);
         this.$refs.refScroll.refresh();
         this.calcTitleMapPos();
         this.$refs.refScroll.scrollTo(0, -this.dTitleMapPos[index].pos, 333);
@@ -143,14 +143,12 @@
         // $nextTick 是 vue 的回调函数, 回调条件: template 渲染完成. 这个函数很重要, 用它作为数据与渲染完成同步的标志
         // 我没有这个函数, 而是用了 setTimeout(). 因为它不保证图片也加载完了.
         // this.$nextTick(() => {})
-// console.log"calcTitleMapPos $$$$$$$$$$$$$$$$$ ");
         setTimeout(() => {
           this.dTitleMapPos = Object.keys(this.$refs).filter((item) => {
             return item.indexOf("refTitle") >= 0    // 只保留包函 refTitle的
           });
           
           this.dTitleMapPos = this.dTitleMapPos.map((item, index) => {
-// console.log{"title": this.dTitleMapPos[index], "pos": this.$refs[this.dTitleMapPos[index]].$el.offsetTop});
             return {"title": this.dTitleMapPos[index], "pos": this.$refs[this.dTitleMapPos[index]].$el.offsetTop}
           })
         }, 1111)
@@ -171,7 +169,6 @@
         if (this.dCurrentBarIndex !== okIndex) {
           this.dCurrentBarIndex = okIndex;
           this.$refs.refDetailNavBar.setCurrentIndex(okIndex);
-// console.log"this.dCurrentBarIndex=======" + this.dCurrentBarIndex);
         }
         
         // 计算 回到顶部
@@ -195,8 +192,15 @@
         // // this.$store.cartList.push(product)   // 这么写不推荐 因为 Vue 将无法捕捉 数据的变化
         // this.$store.commit("addCart", product); // commit 执行 mutations中定义的 addCart方法, 实现将product -> cartList
         
-        // 2. 将商品添加到购物车 通过  dispatch actions
-        this.$store.dispatch("addCart", product);
+        // 2.1 将商品添加到购物车 通过  dispatch actions
+        // this.$store.dispatch("addCart", product).then(res => {
+        //   console.log(res);
+        // });
+        // 2.2 使用 解构到本地的 addCart 方法, 实现与通过 dispatch("addCart", product) 方式调用效果一样
+        this.addCart(product).then(res => {
+          console.log(res);
+          this.$toast.show(res, 1000);
+        })
       }
     }
     , computed: {
